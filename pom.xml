@@ -7,7 +7,6 @@
     <groupId>org.portfolio</groupId>
     <artifactId>EngineDengine</artifactId>
     <version>1.0</version>
-    <description></description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -104,6 +103,12 @@
             <groupId>org.joml</groupId>
             <artifactId>joml</artifactId>
             <version>1.10.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
