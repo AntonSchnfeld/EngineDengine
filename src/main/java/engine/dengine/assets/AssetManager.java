@@ -53,41 +53,68 @@ public final class AssetManager
     }
 
     /**
-     * Checks if a {@link Shader} instance with the same sources exists and returns that. Otherwise, it
-     * returns a new {@link Shader} instance with these sources.
+     * Adds a {@link Shader} instance to the {@link AssetManager} cache and returns it if an identical
+     * instance does not already exist in the cache. If an identical instance exists, that instance is returned.
      * @param vertFilePath the path to the <b>vertex shader</b>
      * @param fragFilePath the path to the <b>fragment shader</b>
-     * @return a {@link Shader} instance which is constructed from the given sources
+     * @return a {@link Shader} instance with the given <b>vertex</b> and <b>fragment shaders</b>
      * @throws ShaderLinkingException if it gets thrown in {@link Shader#Shader(String, String)}
      * @throws ShaderAttachmentException if it gets thrown in {@link Shader#Shader(String, String)}
      * @throws ShaderCompileException if it gets thrown in {@link Shader#Shader(String, String)}
-     * @throws IOException if it gets thrown in {@link FileLoader#readFile(String)}
+     * @throws IOException if it gets thrown in {@link FileLoader#readFile(String)} while reading the
+     * contents of the <b>vertex</b> and <b>fragment shader</b> source files
      */
-    public static Shader getShader (String vertFilePath, String fragFilePath)
+    public static Shader addShader (String vertFilePath, String fragFilePath)
             throws ShaderLinkingException, ShaderAttachmentException, ShaderCompileException, IOException
     {
         String key = vertFilePath.concat(fragFilePath);
         if (shaders.containsKey(key)) return shaders.get(key);
-        Shader newShader = new Shader(FileLoader.readFile(fragFilePath), FileLoader.readFile(fragFilePath));
+        Shader newShader = new Shader(FileLoader.readFile(fragFilePath), FileLoader.readFile(vertFilePath));
         shaders.put(key, newShader);
         return newShader;
     }
 
     /**
-     * Checks if a {@link Texture2D} instance with the same source exists and returns that. Otherwise, it
-     * returns a new {@link Texture2D} instance with the source.
+     * Adds a {@link Texture2D} instance to the {@link AssetManager} cache and returns it if an identical
+     * instance does not already exist in the cache. If an identical instance exists, that instance is returned.
      * @param filePath the path to the <b>source image</b>
-     * @param hasAlpha if the <b>source image</b> has a alpha channel
-     * @return a {@link Texture2D} instance which is constructed from the given source
+     * @param hasAlpha wether the <b>source image</b> has an alpha channel
+     * @return a {@link Texture2D} instance which is constructed from the given <b>source image</b>
      * @throws FileNotFoundException if it gets thrown in {@link Texture2D#Texture2D(String, boolean)}
      */
-    public static Texture2D getTexture2D (String filePath, boolean hasAlpha)
+    public static Texture2D addTexture2D (String filePath, boolean hasAlpha)
             throws FileNotFoundException
     {
         if (texture2Ds.containsKey(filePath)) return texture2Ds.get(filePath);
         Texture2D newTexture = new Texture2D(filePath, hasAlpha);
         texture2Ds.put(filePath, newTexture);
         return newTexture;
+    }
+
+    /**
+     * Checks if a {@link Shader} instance with the same sources exists and returns that. Otherwise, <b>null</b> is returned.
+     *
+     * @param vertFilePath the path to the <b>vertex shader</b>
+     * @param fragFilePath the path to the <b>fragment shader</b>
+     * @return a {@link Shader} instance which is constructed from the given sources or null
+     */
+    public static Shader getShader (String vertFilePath, String fragFilePath)
+    {
+        String key = vertFilePath.concat(fragFilePath);
+        if (shaders.containsKey(key)) return shaders.get(key);
+        return null;
+    }
+
+    /**
+     * Checks if a {@link Texture2D} instance with the same source exists and returns that. Otherwise, it
+     * returns null.
+     * @param filePath the path to the <b>source image</b>
+     * @return a {@link Texture2D} instance which is constructed from the given source or null
+     */
+    public static Texture2D getTexture2D (String filePath)
+    {
+        if (texture2Ds.containsKey(filePath)) return texture2Ds.get(filePath);
+        return null;
     }
 
     /**

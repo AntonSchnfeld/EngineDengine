@@ -17,10 +17,10 @@ import static org.lwjgl.opengl.GL33C.*;
  * <h2>{@link Shader}</h2>
  * <br>
  * The {@link Shader} class serves as an abstraction of <b>OpenGL shader programs</b>. To obtain
- * an instance of {@link Shader}, use {@link AssetManager#getShader(String, String)}. This will
- * guarantee that no {@link Shader} with identical <b>vertex</b> and <b>fragment shaders</b> to
- * another {@link Shader} is instantiated. To dispose of a {@link Shader} instance from the
- * {@link AssetManager} and delete it from <b>OpenGL</b>,
+ * an instance of {@link Shader}, use {@link AssetManager#getShader(String, String)} or
+ * {@link AssetManager#addShader(String, String)}. This will guarantee that no {@link Shader}
+ * with identical <b>vertex</b> and <b>fragment shaders</b> to another {@link Shader} is instantiated.
+ * To dispose of a {@link Shader} instance from the {@link AssetManager} and delete it from <b>OpenGL</b>,
  * use {@link AssetManager#disposeShader(Shader)} or {@link AssetManager#disposeShader(String, String)}.
  */
 public class Shader {
@@ -141,5 +141,41 @@ public class Shader {
     public void uploadMat4f(String uniform, Matrix4f value) {
         glUniformMatrix4fv(GL33C.glGetUniformLocation(id, uniform)
                 , false, value.get(new float[16]));
+    }
+
+    /**
+     * Indicates wether this {@link Shader} instance is "equal" to another {@link Object} instance.
+     * The reference object is "equal" to this instance if it is of type {@link Shader} and has the same
+     * <b>OpenGL program id</b> as this instance.
+     * @param obj the reference object
+     * @return wether this instance and the reference object are "equal"
+     */
+    @Override
+    public boolean equals (Object obj)
+    {
+        if (obj == null) return false;
+        if (obj instanceof Shader shader)
+            return shader.id == this.id;
+        return false;
+    }
+
+    /**
+     * Returns a {@link String} representation of this {@link Shader} instance.
+     * @return a {@link String} representation of this {@link Shader} instance
+     */
+    @Override
+    public String toString ()
+    {
+        return getClass().getName() + "[" + id + "]";
+    }
+
+    /**
+     * Returns a hash code value which represents this {@link Shader} instance.
+     * @return a hash code value which represents this {@link Shader} instance
+     */
+    @Override
+    public int hashCode ()
+    {
+        return id;
     }
 }

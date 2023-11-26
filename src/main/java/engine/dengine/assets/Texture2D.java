@@ -3,9 +3,9 @@ package engine.dengine.assets;
 import org.lwjgl.BufferUtils;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+
 import static org.lwjgl.opengl.GL33C.*;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
@@ -18,8 +18,9 @@ import static org.lwjgl.stb.STBImage.stbi_load;
  * <h2>{@link Texture2D}</h2>
  * <br>
  * The {@link Texture2D} class serves as an abstraction of <b>OpenGl 2D textures</b>. To obtain
- * an instance of {@link Texture2D}, use {@link AssetManager#getTexture2D(String, boolean)}. This
- * guarantee that no {@link Texture2D} with an identical <b>source image</b> to another {@link Texture2D}
+ * an instance of {@link Texture2D}, use {@link AssetManager#getTexture2D(String)} or
+ * {@link AssetManager#addTexture2D(String, boolean)}. This guarantees that no {@link Texture2D}
+ * with an identical <b>source image</b> to another {@link Texture2D}
  * is instantiated. To dispose of a {@link Texture2D} instance from the {@link AssetManager} and delete it
  * from <b>OpenGL</b>, use {@link AssetManager#disposeTexture2D(Texture2D)} or
  * {@link AssetManager#disposeTexture2D(String)};
@@ -107,5 +108,41 @@ public class Texture2D
     protected void dispose ()
     {
         glDeleteTextures(id);
+    }
+
+    /**
+     * Indicates wether this {@link Texture2D} instance is "equal" to another {@link Object} instance.
+     * The reference object is "equal" to this instance if it is of type {@link Texture2D} and has the same
+     * <b>OpenGL texture id</b>, width and height as this instance.
+     * @param obj the reference object
+     * @return wether this instance and the reference object are "equal"
+     */
+    @Override
+    public boolean equals (Object obj)
+    {
+        if (obj == null) return false;
+        if (obj instanceof Texture2D tex)
+            return tex.id == this.id && this.width.get() == tex.width.get() && this.height.get() == tex.height.get();
+        return false;
+    }
+
+    /**
+     * Returns a {@link String} representation of this {@link Texture2D} instance.
+     * @return a {@link String} representation of this {@link Texture2D} instance
+     */
+    @Override
+    public String toString ()
+    {
+        return getClass().getName()+ "[" + id + ", " + width.get() + ", " + height.get() + "]";
+    }
+
+    /**
+     * Returns a hash code value which represents this {@link Texture2D} instance.
+     * @return a hash code value which represents this {@link Texture2D} instance
+     */
+    @Override
+    public int hashCode ()
+    {
+        return height.get() + width.get() + id;
     }
 }
