@@ -61,9 +61,10 @@ public final class AssetManager
      * @throws ShaderLinkingException if it gets thrown in {@link Shader#Shader(String, String)}
      * @throws ShaderAttachmentException if it gets thrown in {@link Shader#Shader(String, String)}
      * @throws ShaderCompileException if it gets thrown in {@link Shader#Shader(String, String)}
+     * @throws IOException if it gets thrown in {@link FileLoader#readFile(String)}
      */
     public static Shader getShader (String vertFilePath, String fragFilePath)
-            throws ShaderLinkingException, ShaderAttachmentException, ShaderCompileException
+            throws ShaderLinkingException, ShaderAttachmentException, ShaderCompileException, IOException
     {
         String key = vertFilePath.concat(fragFilePath);
         if (shaders.containsKey(key)) return shaders.get(key);
