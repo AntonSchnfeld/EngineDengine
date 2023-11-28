@@ -5,9 +5,7 @@ import engine.dengine.assets.Shader;
 import engine.dengine.exceptions.ShaderAttachmentException;
 import engine.dengine.exceptions.ShaderCompileException;
 import engine.dengine.exceptions.ShaderLinkingException;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWImage;
-import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
@@ -81,6 +79,7 @@ public class Window
 
         // Set up a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, KeyListener.getInstance());
+        glfwSetFramebufferSizeCallback(window, new WindowResizeListener());
 
         // Get the thread stack and push a new frame
         try ( MemoryStack stack = stackPush() ) {
@@ -147,7 +146,30 @@ public class Window
      */
     public int getWidth ()
     {
+        int[] temp = new int[1];
+        glfwGetWindowSize(window, temp, new int[1]);
+        window = temp[0];
         return width;
+    }
+    /**
+     * Returns the window x coordinate.
+     * @return the window x coordinate
+     */
+    public int getX ()
+    {
+        int[] temp = new int[1];
+        glfwGetWindowPos(window, temp, null);
+        return temp[0];
+    }
+    /**
+     * Returns the window y coordinate.
+     * @return the window y coordinate
+     */
+    public int getY ()
+    {
+        int[] temp = new int[1];
+        glfwGetWindowPos(window, null, temp);
+        return temp[0];
     }
 
     /**
@@ -156,6 +178,9 @@ public class Window
      */
     public int getHeight ()
     {
+        int[] temp = new int[1];
+        glfwGetWindowSize(window, new int[1], temp);
+        height = temp[0];
         return height;
     }
 
