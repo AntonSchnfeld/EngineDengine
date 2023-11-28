@@ -1,4 +1,6 @@
-package engine.dengine.graphics;
+package engine.dengine.shapes;
+
+import engine.dengine.math.MathUtil;
 
 /**
  * @author Anton Schoenfeld
@@ -50,34 +52,12 @@ public class Rectangle extends Shape
             float z = anotherVertices[i + 2];
 
             // Check if the point (x, y, z) is inside the rectangle
-            if (isPointInRectangle(x, y, z, vertices)) {
+            if (MathUtil.isPointInRectangle(this, x, y, z))
+            {
                 return true; // Collision detected
             }
         }
-
         // No collision detected
         return false;
-    }
-
-    private boolean isPointInRectangle(float x, float y, float z, float[] rectangleVertices) {
-        // Extract vertices of the rectangle
-        float x1 = rectangleVertices[0];
-        float y1 = rectangleVertices[1];
-        float z1 = rectangleVertices[2];
-        float x2 = rectangleVertices[3];
-        float y2 = rectangleVertices[4];
-        float z2 = rectangleVertices[5];
-        float x3 = rectangleVertices[6];
-        float y3 = rectangleVertices[7];
-        float z3 = rectangleVertices[8];
-        float x4 = rectangleVertices[9];
-        float y4 = rectangleVertices[10];
-        float z4 = rectangleVertices[11];
-
-        // Check if the point is inside the rectangle using the bounding box algorithm
-        return x >= Math.min(x1, x2) && x <= Math.max(x1, x2) &&
-                y >= Math.min(y1, y3) && y <= Math.max(y1, y3) &&
-                z >= Math.min(z1, Math.min(z2, Math.min(z3, z4))) &&
-                z <= Math.max(z1, Math.max(z2, Math.max(z3, z4)));
     }
 }

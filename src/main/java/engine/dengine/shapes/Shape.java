@@ -1,4 +1,4 @@
-package engine.dengine.graphics;
+package engine.dengine.shapes;
 
 /**
  * @author Anton Schoenfeld

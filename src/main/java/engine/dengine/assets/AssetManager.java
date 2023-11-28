@@ -136,12 +136,7 @@ public final class AssetManager
      */
     public static void disposeTexture2D (Texture2D tex)
     {
-        texture2Ds.forEach((key, value) -> {
-            if (value == tex)
-            {
-                texture2Ds.remove(key);
-            }
-        });
+        texture2Ds.values().remove(tex);
     }
 
     /**
@@ -165,11 +160,6 @@ public final class AssetManager
      */
     public static void disposeShader (Shader shader)
     {
-        shaders.forEach((key, value) -> {
-            if (value == shader)
-            {
-                shaders.remove(key);
-            }
-        });
+        shaders.values().remove(shader);
     }
 }
