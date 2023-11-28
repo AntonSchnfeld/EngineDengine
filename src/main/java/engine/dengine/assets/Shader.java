@@ -23,7 +23,8 @@ import static org.lwjgl.opengl.GL33C.*;
  * To dispose of a {@link Shader} instance from the {@link AssetManager} and delete it from <b>OpenGL</b>,
  * use {@link AssetManager#disposeShader(Shader)} or {@link AssetManager#disposeShader(String, String)}.
  */
-public class Shader {
+public class Shader
+{
     private final int id;
 
     /**
@@ -40,7 +41,8 @@ public class Shader {
      * @throws engine.dengine.exceptions.ShaderLinkingException    if linking of the <b>shader program</b> fails
      */
     protected Shader(String fragSourceCode, String vertSourceCode)
-            throws ShaderCompileException, ShaderAttachmentException, ShaderLinkingException {
+            throws ShaderCompileException, ShaderAttachmentException, ShaderLinkingException
+    {
         // Create Shader program
         this.id = GL33C.glCreateProgram();
 
