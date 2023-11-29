@@ -22,7 +22,8 @@ public class Triangle extends Shape
      * @throws IllegalArgumentException if the z-coordinate of all the <b>vertices</b> are not the same or the array
      * does not have length 9
      */
-    public Triangle(float[] vertices) {
+    public Triangle (float[] vertices)
+    {
         super(vertices);
         validateVertices(vertices);
     }

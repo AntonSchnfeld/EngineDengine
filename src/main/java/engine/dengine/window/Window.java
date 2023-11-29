@@ -2,14 +2,11 @@ package engine.dengine.window;
 
 import engine.dengine.assets.AssetManager;
 import engine.dengine.assets.Shader;
-import engine.dengine.exceptions.ShaderAttachmentException;
-import engine.dengine.exceptions.ShaderCompileException;
-import engine.dengine.exceptions.ShaderLinkingException;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL33C;
 import org.lwjgl.system.MemoryStack;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -48,7 +45,7 @@ public class Window
 
     // The window handle
     private long window;
-    private int width, height;
+    protected int width, height;
     private String title;
 
     private Window ()
@@ -64,7 +61,6 @@ public class Window
 
         init();
     }
-
     private void init ()
     {
         // Configure GLFW
@@ -79,7 +75,7 @@ public class Window
 
         // Set up a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, KeyListener.getInstance());
-        glfwSetFramebufferSizeCallback(window, new WindowResizeListener());
+        glfwSetFramebufferSizeCallback(window, WindowResizeListener.getInstance());
 
         // Get the thread stack and push a new frame
         try ( MemoryStack stack = stackPush() ) {
@@ -111,6 +107,7 @@ public class Window
         // Make the window visible
         glfwShowWindow(window);
     }
+
     private void loop ()
     {
         System.out.println("Hello EngineDengine 1.0!");
@@ -122,14 +119,13 @@ public class Window
         GL.createCapabilities();
 
         // Set the clear color
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-
+        glClearColor(0f, 0f, 0f, 1f);
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window))
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
+            glViewport(0, 0, width, height);
             glfwSwapBuffers(window); // swap the color buffers
 
             // Poll for window events. The key callback above will only be
@@ -141,14 +137,39 @@ public class Window
     }
 
     /**
+     * <b>Runs</b> this {@link Window} instance. This method starts the internal <b>rendering loop</b> of the window
+     * and disposes ({@link Window#dispose()}) of it when that loop is finished. Note that calls to this window have
+     * to be made in setters or getters from the <b>rendering loop</b> or from another {@link Thread}.
+     */
+    public void run ()
+    {
+        loop();
+        dispose();
+    }
+
+    /**
+     * Disposes of this {@link Window} instance. The instances methods and any <b>OpenGL rendering</b> will not
+     * work when called after calling this method.
+     */
+    public void dispose ()
+    {
+        AssetManager.disposeAll();
+        // Free the memory
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
+
+        // Terminate GLFW and the free the error callback
+        glfwTerminate();
+        var c = glfwSetErrorCallback(null);
+        if (c != null) c.free();
+    }
+
+    /**
      * Returns the window width.
      * @return the window width
      */
     public int getWidth ()
     {
-        int[] temp = new int[1];
-        glfwGetWindowSize(window, temp, new int[1]);
-        window = temp[0];
         return width;
     }
     /**
@@ -178,9 +199,6 @@ public class Window
      */
     public int getHeight ()
     {
-        int[] temp = new int[1];
-        glfwGetWindowSize(window, new int[1], temp);
-        height = temp[0];
         return height;
     }
 
@@ -258,32 +276,5 @@ public class Window
     public void setWindowIcon (ByteBuffer icon)
     {
         glfwSetWindowIcon(window, new GLFWImage.Buffer(icon));
-    }
-
-    /**
-     * <b>Runs</b> this {@link Window} instance. This method starts the internal <b>rendering loop</b> of the window
-     * and disposes ({@link Window#dispose()}) of it when that loop is finished. Note that calls to this window have
-     * to be made in setters or getters from the <b>rendering loop</b> or from another {@link Thread}.
-     */
-    public void run ()
-    {
-        loop();
-        dispose();
-    }
-
-    /**
-     * Disposes of this {@link Window} instance. The instances methods and any <b>OpenGL rendering</b> will not
-     * work when called after calling this method.
-     */
-    public void dispose ()
-    {
-        // Free the memory
-        glfwFreeCallbacks(window);
-        glfwDestroyWindow(window);
-
-        // Terminate GLFW and the free the error callback
-        glfwTerminate();
-        var c = glfwSetErrorCallback(null);
-        if (c != null) c.free();
     }
 }

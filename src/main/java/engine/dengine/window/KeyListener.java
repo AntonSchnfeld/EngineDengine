@@ -21,6 +21,10 @@ public class KeyListener extends GLFWKeyCallback
     {
         private static final KeyListener theKeyListener = new KeyListener();
     }
+    /**
+     * Returns the {@link KeyListener} instance.
+     * @return the {@link KeyListener} instance
+     */
     protected static KeyListener getInstance()
     {
         return SingletonHolder.theKeyListener;

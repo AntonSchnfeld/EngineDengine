@@ -162,4 +162,16 @@ public final class AssetManager
     {
         shaders.values().remove(shader);
     }
+
+    /**
+     * Disposes of all cached <b>assets</b>. The {@link AssetManager} cache will be completely empty after
+     * this method call.
+     */
+    public static void disposeAll ()
+    {
+        for (Shader shader : shaders.values())
+            disposeShader(shader);
+        for (Texture2D tex : texture2Ds.values())
+            disposeTexture2D(tex);
+    }
 }

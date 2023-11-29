@@ -35,15 +35,6 @@ public abstract class Shape
     }
 
     /**
-     * Sets the <b>vertices</b> of this {@link Shape} instance.
-     * @param vertices the new <b>vertices</b>
-     */
-    public void setVertices (float[] vertices)
-    {
-        this.vertices = vertices;
-    }
-
-    /**
      * Returns the count of <b>vertices</b> of this {@link Shape} instance.
      * A <b>vertex</b> contains an x, y and z coordinate.
      * @return the <b>vertex</b> count
