@@ -2,8 +2,10 @@ package engine.dengine.window;
 
 import engine.dengine.assets.AssetManager;
 import engine.dengine.assets.Shader;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL33C;
 import org.lwjgl.system.MemoryStack;
 
@@ -65,10 +67,12 @@ public class Window
     {
         // Configure GLFW
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
+        glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Create the window
+        width = 300;
+        height = 300;
         window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
@@ -118,6 +122,37 @@ public class Window
         // bindings available for use.
         GL.createCapabilities();
 
+        int VAO = glGenVertexArrays();
+        int VBO = glGenBuffers();
+        int EBO = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, new float[]{
+                0.5f, 0.5f, 0.0f,       1f, 1f, 1f, 1f, // Top right
+                0.5f, -0.5f, 0.0f,      0f, 1f, 0f, 1f, // Bottom right
+                -0.5f, -0.5f, 0.0f,     1f, 0f, 0f, 1f, // Bottom left
+                -0.5f, 0.5f, 0.0f,      0f, 0f, 1f, 1f // Top left
+        }, GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, new int[]{
+                0, 1, 3,   // first triangle
+                1, 2, 3    // second triangle
+        }, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 7 * Float.BYTES, 0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 4, GL_FLOAT, false, 7 * Float.BYTES, 3 * Float.BYTES);
+        glEnableVertexAttribArray(1);
+
+        Shader shader = null;
+        try {
+            shader = AssetManager.addShader("test.vert", "test.frag");
+        } catch (Exception e) {e.printStackTrace();}
+
         // Set the clear color
         glClearColor(0f, 0f, 0f, 1f);
         // Run the rendering loop until the user has attempted to close
@@ -125,7 +160,15 @@ public class Window
         while (!glfwWindowShouldClose(window))
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-            glViewport(0, 0, width, height);
+
+            glViewport(0, 0, this.width, this.height); // Refresh viewport
+
+            shader.use();
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glUseProgram(0);
+            glBindVertexArray(0);
+
             glfwSwapBuffers(window); // swap the color buffers
 
             // Poll for window events. The key callback above will only be
@@ -143,6 +186,7 @@ public class Window
      */
     public void run ()
     {
+        setVisible(true);
         loop();
         dispose();
     }
@@ -247,7 +291,7 @@ public class Window
      */
     public void setVisible (boolean visible)
     {
-        glfwSetWindowAttrib(window, GLFW_VISIBLE, visible ? GLFW_TRUE : GLFW_FALSE);
+        glfwWindowHint(GLFW_VISIBLE, visible ? GLFW_TRUE : GLFW_FALSE);
     }
 
     /**
