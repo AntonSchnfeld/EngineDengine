@@ -145,4 +145,14 @@ public class Texture2D
     {
         return height.get() + width.get() + id;
     }
+
+    /**
+     * Returns the <b>OpenGL identifier</b> which is used to perform operations like binding to a <b>texture slot</b>
+     * or deleting the <b>texture</b>.
+     * @return
+     */
+    public int getId()
+    {
+        return id;
+    }
 }
