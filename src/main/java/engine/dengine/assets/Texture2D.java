@@ -29,6 +29,7 @@ public class Texture2D
 {
     private final int id; // Texture id for OpenGL operations
     private final IntBuffer width, height; // Width and height of texture
+    private final String filePath; // file path of source file
 
     /**
      * Creates a new {@link Texture2D} instance from the given image, by reading
@@ -42,6 +43,8 @@ public class Texture2D
     protected Texture2D(String filepath, boolean hasAlpha)
             throws FileNotFoundException
     {
+        this.filePath = filepath;
+
         id = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, id);
 
@@ -64,7 +67,9 @@ public class Texture2D
 
         final int colorMode = hasAlpha ? GL_RGBA : GL_RGB;
         data.flip();
-        glTexImage2D(GL_TEXTURE_2D, 0, colorMode, width.get(), height.get(), 0, colorMode, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(
+                GL_TEXTURE_2D, 0, colorMode, width.get(), height.get(),
+                0, colorMode, GL_UNSIGNED_BYTE, data);
         stbi_image_free(data);
     }
 
@@ -81,7 +86,8 @@ public class Texture2D
             glActiveTexture(GL_TEXTURE0 + slot);
             return;
         }
-        throw new IllegalArgumentException("Tried to bind Texture2D to texture slot that is either smaller than 0 or larger than 31");
+        throw new IllegalArgumentException(
+                "Tried to bind Texture2D to texture slot that is either smaller than 0 or larger than 31");
     }
 
     /**
@@ -100,6 +106,15 @@ public class Texture2D
     public int getWidth ()
     {
         return width.get();
+    }
+
+    /**
+     * Returns the file path to this {@link Texture2D} instances <b>source image</b>.
+     * @return file path to <b>source image</b>
+     */
+    public String getFilePath ()
+    {
+        return filePath;
     }
 
     /**
@@ -122,7 +137,9 @@ public class Texture2D
     {
         if (obj == null) return false;
         if (obj instanceof Texture2D tex)
-            return tex.id == this.id && this.width.get() == tex.width.get() && this.height.get() == tex.height.get();
+            return tex.id == this.id
+                    && this.width.get() == tex.width.get() && this.height.get() == tex.height.get()
+                    && this.filePath.equals(tex.filePath);
         return false;
     }
 
@@ -133,7 +150,8 @@ public class Texture2D
     @Override
     public String toString ()
     {
-        return getClass().getName()+ "[" + id + ", " + width.get() + ", " + height.get() + "]";
+        return getClass().getName()
+                + "[" + id + ", " + width.get() + ", " + height.get() + ", " + filePath +"]";
     }
 
     /**
@@ -143,13 +161,14 @@ public class Texture2D
     @Override
     public int hashCode ()
     {
-        return height.get() + width.get() + id;
+        return height.get() + width.get() + id + filePath.hashCode();
     }
 
     /**
-     * Returns the <b>OpenGL identifier</b> which is used to perform operations like binding to a <b>texture slot</b>
+     * Returns the <b>OpenGL identifier</b> which is used to perform operations like binding to a
+     * <b>texture slot</b>
      * or deleting the <b>texture</b>.
-     * @return
+     * @return the <b>OpenGL identifier</b>
      */
     public int getId()
     {

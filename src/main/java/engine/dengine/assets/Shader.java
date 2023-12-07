@@ -26,6 +26,7 @@ import static org.lwjgl.opengl.GL33C.*;
 public class Shader
 {
     private final int id;
+    private final String filePath;
 
     /**
      * Creates a new {@link Shader} instance with the given <b>fragment</b> and <b>vertex shader</b>, by compiling
@@ -40,9 +41,11 @@ public class Shader
      *                                                             fails
      * @throws engine.dengine.exceptions.ShaderLinkingException    if linking of the <b>shader program</b> fails
      */
-    protected Shader(String fragSourceCode, String vertSourceCode)
+    protected Shader (String fragSourceCode, String vertSourceCode)
             throws ShaderCompileException, ShaderAttachmentException, ShaderLinkingException
     {
+        this.filePath = fragSourceCode.concat(vertSourceCode);
+
         // Create Shader program
         this.id = GL33C.glCreateProgram();
 
@@ -81,16 +84,37 @@ public class Shader
     }
 
     /**
+     * Returns the <b>OpenGL identifier</b> which is used to perform operations
+     * like using the <b>shader</b> or deleting it.
+     * @return the <b>OpenGL identifier</b>
+     */
+    public int getId ()
+    {
+        return id;
+    }
+
+    /**
+     * Returns the concatinated file paths of the <b>fragment</b> and <b>vertex shaders</b>.
+     * @return the concatinated file path
+     */
+    public String getFilePath ()
+    {
+        return filePath;
+    }
+
+    /**
      * Binds this {@link Shader} to the <b>OpenGL context</b>.
      */
-    public void use() {
+    public void use ()
+    {
         glUseProgram(id);
     }
 
     /**
      * Deletes this {@link Shader} from <b>OpenGL</b>.
      */
-    protected void dispose() {
+    protected void dispose ()
+    {
         glDeleteProgram(id);
     }
 
@@ -100,7 +124,8 @@ public class Shader
      * @param uniformName the variable name of the <b>uniform</b>
      * @return the location of the uniform
      */
-    public int getUniformLocation(String uniformName) {
+    public int getUniformLocation (String uniformName)
+    {
         return glGetUniformLocation(id, uniformName);
     }
 
@@ -110,7 +135,8 @@ public class Shader
      * @param uniform the variable name of the <b>uniform</b>
      * @param value   the <b>float</b> value which is to be uploaded
      */
-    public void uploadUniform1f(String uniform, float value) {
+    public void uploadUniform1f(String uniform, float value)
+    {
         glUniform1f(GL33C.glGetUniformLocation(id, uniform), value);
     }
 
@@ -120,7 +146,8 @@ public class Shader
      * @param uniform the variable name of the <b>uniform</b>
      * @param value   the <b>int</b> value which is to be uploaded
      */
-    public void uploadUniform1i(String uniform, int value) {
+    public void uploadUniform1i(String uniform, int value)
+    {
         glUniform1i(GL33C.glGetUniformLocation(id, uniform), value);
     }
 
@@ -130,7 +157,8 @@ public class Shader
      * @param uniform the variable name of the <b>uniform</b>
      * @param slot    the <b>texture slot</b> the {@link Texture2D} is bound to
      */
-    public void uploadUniformTexture2D(String uniform, int slot) {
+    public void uploadUniformTexture2D (String uniform, int slot)
+    {
         glUniform1i(GL33C.glGetUniformLocation(id, uniform), slot);
     }
 
@@ -140,7 +168,8 @@ public class Shader
      * @param uniform the variable name of the <b>uniform</b>
      * @param value   alue the {@link Matrix4f} which is to be uploaded
      */
-    public void uploadMat4f(String uniform, Matrix4f value) {
+    public void uploadMat4f (String uniform, Matrix4f value)
+    {
         glUniformMatrix4fv(GL33C.glGetUniformLocation(id, uniform)
                 , false, value.get(new float[16]));
     }
@@ -157,7 +186,7 @@ public class Shader
     {
         if (obj == null) return false;
         if (obj instanceof Shader shader)
-            return shader.id == this.id;
+            return shader.id == this.id && shader.filePath.equals(this.filePath);
         return false;
     }
 
@@ -168,7 +197,7 @@ public class Shader
     @Override
     public String toString ()
     {
-        return getClass().getName() + "[" + id + "]";
+        return getClass().getName() + "[" + id + ", " + filePath + "]";
     }
 
     /**
@@ -178,6 +207,6 @@ public class Shader
     @Override
     public int hashCode ()
     {
-        return id;
+        return id + filePath.hashCode();
     }
 }

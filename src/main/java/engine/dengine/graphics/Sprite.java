@@ -17,6 +17,7 @@ public class Sprite
 {
     private Texture2D texture;
     private float[] uvs;
+    private final int width, height;
 
     /**
      * Creates a new {@link Sprite} instance which contains the whole texture.
@@ -30,18 +31,22 @@ public class Sprite
                         1, 1,
                         0, 0,
                         1, 0
-                });
+                }, texture.getWidth(), texture.getHeight());
     }
 
     /**
      * Creates a new {@link Sprite} instance with the specified <b>texture</b> and <b>UVs</b>.
      * @param texture the <b>texture</b> which should be used
      * @param uvs the <b>UVs</b> which will be used
+     * @param width the width of the sprite in pixels
+     * @param height the height of the sprite in pixels
      */
-    public Sprite (Texture2D texture, float[] uvs)
+    public Sprite (Texture2D texture, float[] uvs, int width, int height)
     {
         this.texture = texture;
         this.uvs = uvs;
+        this.width = width;
+        this.height = height;
     }
 
     /**

@@ -33,11 +33,12 @@ public class Entity
      */
     public void addComponent (Component component)
     {
-        if (!components.contains(component))
+        for (Component comp : components)
         {
-            components.add(component);
-            component.entity = this;
+            if (comp.getClass().equals(component.getClass()))
+                return;
         }
+        components.add(component);
     }
 
     /**
