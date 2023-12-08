@@ -18,6 +18,7 @@ import java.util.List;
 public class Entity
 {
     private List<Component> components;
+    private Transform transform;
 
     /**
      * Creates a new {@link Entity} instance.
@@ -64,6 +65,16 @@ public class Entity
         for (Component component : components)
             if (component.getClass().isAssignableFrom(clazz)) return clazz.cast(component);
         return null;
+    }
+
+    public Transform getTransform ()
+    {
+        return transform;
+    }
+
+    public void setTransform (Transform transform)
+    {
+        this.transform = transform;
     }
 
     /**

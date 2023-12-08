@@ -21,11 +21,11 @@ public class RenderBatch
     private static final int UV_POS = 2;
     private static final int TEXTURE_ID_POS = 3;
 
-    private static final int POSITION_SIZE = 3;
-    private static final int COLOR_SIZE = 4;
-    private static final int UV_SIZE = 2;
-    private static final int TEXTURE_ID_SIZE = 1;
-    private static final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + UV_SIZE + TEXTURE_ID_SIZE;
+    public static final int POSITION_SIZE = 3;
+    public static final int COLOR_SIZE = 4;
+    public static final int UV_SIZE = 2;
+    public static final int TEXTURE_ID_SIZE = 1;
+    public static final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + UV_SIZE + TEXTURE_ID_SIZE;
 
     private static final int POSITION_STRIDE = POSITION_SIZE * Float.BYTES;
     private static final int COLOR_STRIDE = COLOR_SIZE * Float.BYTES;

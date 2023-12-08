@@ -1,6 +1,7 @@
 package engine.dengine.graphics;
 
 import engine.dengine.assets.Texture2D;
+import org.joml.Vector4f;
 
 
 /**
@@ -18,6 +19,7 @@ public class Sprite
     private Texture2D texture;
     private float[] uvs;
     private final int width, height;
+
 
     /**
      * Creates a new {@link Sprite} instance which contains the whole texture.

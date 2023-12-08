@@ -1,6 +1,7 @@
 package engine.dengine.graphics;
 
 import engine.dengine.assets.Texture2D;
+import org.joml.Vector4f;
 
 /**
  * @author Anton Schoenfeld
@@ -14,8 +15,8 @@ import engine.dengine.assets.Texture2D;
  */
 public class SpriteSheet
 {
-    private Texture2D texture;
-    private Sprite[] sprites;
+    private final Texture2D texture;
+    private final Sprite[] sprites;
 
     /**
      * Creates a new {@link SpriteSheet} instance with a spacing of 0.
@@ -37,8 +38,7 @@ public class SpriteSheet
      * @param numSprites how many sprites are on the <b>spritesheet</b>
      * @param spriteSpacing the spacing between the <b>sprites</b>
      */
-    public SpriteSheet (
-            Texture2D texture2D, int spriteHeight, int spriteWidth, int numSprites, int spriteSpacing)
+    public SpriteSheet (Texture2D texture2D, int spriteHeight, int spriteWidth, int numSprites, int spriteSpacing)
     {
         this.texture = texture2D;
         this.sprites = new Sprite[numSprites];
@@ -60,7 +60,8 @@ public class SpriteSheet
                             rightX, bottomY // Bottom right
                     };
 
-            Sprite sprite = new Sprite(texture, uvs, spriteWidth, spriteHeight);
+            Sprite sprite =
+                    new Sprite(texture, uvs, spriteWidth, spriteHeight);
             sprites[i] = sprite;
 
             currX += spriteWidth + spriteSpacing;
