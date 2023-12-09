@@ -18,13 +18,14 @@ public abstract class Component
      * The entity which this component is bound to
      */
     protected Entity entity;
+    protected boolean initialized;
 
     /**
      * Creates a new {@link Component} instance.
      */
     public Component ()
     {
-
+        initialized = false;
     }
 
     /**
@@ -32,7 +33,7 @@ public abstract class Component
      */
     public void init ()
     {
-
+        initialized = true;
     }
 
     /**
@@ -41,7 +42,7 @@ public abstract class Component
      */
     public void update (float deltaTime)
     {
-
+        if (!initialized) init();
     }
 
     /**

@@ -60,8 +60,7 @@ public class SpriteSheet
                             rightX, bottomY // Bottom right
                     };
 
-            Sprite sprite =
-                    new Sprite(texture, uvs, spriteWidth, spriteHeight);
+            Sprite sprite = new Sprite(texture, uvs, spriteWidth, spriteHeight);
             sprites[i] = sprite;
 
             currX += spriteWidth + spriteSpacing;

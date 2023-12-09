@@ -67,11 +67,19 @@ public class Entity
         return null;
     }
 
+    /**
+     * Returns the <b>entities</b> {@link Transform}.
+     * @return the {@link Transform}
+     */
     public Transform getTransform ()
     {
         return transform;
     }
 
+    /**
+     * Sets the <b>entities</b> {@link Transform}
+     * @param transform the {@link Transform}
+     */
     public void setTransform (Transform transform)
     {
         this.transform = transform;

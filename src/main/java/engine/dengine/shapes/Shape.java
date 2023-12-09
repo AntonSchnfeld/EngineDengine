@@ -1,5 +1,7 @@
 package engine.dengine.shapes;
 
+import engine.dengine.ecs.Transform;
+
 /**
  * @author Anton Schoenfeld
  * @version 1.0
@@ -15,14 +17,27 @@ package engine.dengine.shapes;
 public abstract class Shape
 {
     protected float[] vertices;
+    protected Transform transform;
 
     /**
-     * Creates a new {@link Shape} instance with the given <b>vertices</b>.
+     * Creates a new {@link Shape} instance with the given <b>vertices</b> with a default {@link Transform}
+     * created with {@link Transform#Transform()}.
      * @param vertices the <b>vertices</b> of the new {@link Shape} instance
      */
     public Shape (float[] vertices)
     {
+        this(vertices, new Transform());
+    }
+
+    /**
+     * Creates a new {@link Shape} instance.
+     * @param vertices the vertices of the new {@link Shape} instance
+     * @param transform the {@link Transform} of the new {@link Shape} instance
+     */
+    public Shape (float[] vertices, Transform transform)
+    {
         this.vertices = vertices;
+        this.transform = transform;
     }
 
     /**
@@ -32,6 +47,25 @@ public abstract class Shape
     public float[] getVertices ()
     {
         return vertices;
+    }
+
+    /**
+     * Returns this {@link Shape}s {@link Transform} instance.
+     * @return this {@link Shape}s {@link Transform} instance
+     */
+    public Transform getTransform ()
+    {
+        return transform;
+    }
+
+    /**
+     * Sets this {@link Shape}s {@link Transform} to another {@link Transform} using {@link Transform#set(Transform)}.
+     * @param transform the other {@link Transform}
+     */
+    public void setTransform (Transform transform)
+    {
+        if (this.transform.equals(transform)) return;
+        this.transform.set(transform);
     }
 
     /**
