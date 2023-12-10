@@ -1,6 +1,5 @@
 package engine.dengine.ecs;
 
-import engine.dengine.assets.Shader;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -84,6 +83,15 @@ public class Transform
     }
 
     /**
+     * Sets the <b>rotation</b>.
+     * @param rotation the new <b>rotation</b>
+     */
+    public void setRotation (float rotation)
+    {
+        this.rotation = rotation;
+    }
+
+    /**
      * Returns the <b>position</b>.
      * @return the <b>position</b>
      */
@@ -99,6 +107,15 @@ public class Transform
     public Vector2f getScale ()
     {
         return scale;
+    }
+
+    /**
+     * Returns the <b>rotation</b>.
+     * @return the <b>rotation</b>
+     */
+    public float getRotation ()
+    {
+        return rotation;
     }
 
     /**

@@ -75,6 +75,7 @@ public class RenderComponent extends Component
     public void update (float deltaTime)
     {
         super.update(deltaTime);
+
         Transform entityTransform = entity.getTransform();
         if (!entityTransform.equals(lastTransform))
         {
@@ -95,12 +96,12 @@ public class RenderComponent extends Component
 
         for (int i = 0; i < shape.getVertexCount(); i++)
         {
-            int index = i * RenderBatch.VERTEX_SIZE;
+            final int index = i * RenderBatch.VERTEX_SIZE;
 
             // Position
-            result[index] = shape.getVertices()[i * RenderBatch.POSITION_SIZE];         // x
-            result[index + 1] = shape.getVertices()[i * RenderBatch.POSITION_SIZE + 1]; // y
-            result[index + 2] = shape.getVertices()[i * RenderBatch.POSITION_SIZE + 2]; // z
+            result[index] = shape.getTransformedVertices()[i * RenderBatch.POSITION_SIZE];         // x
+            result[index + 1] = shape.getTransformedVertices()[i * RenderBatch.POSITION_SIZE + 1]; // y
+            result[index + 2] = shape.getTransformedVertices()[i * RenderBatch.POSITION_SIZE + 2]; // z
 
             // Color
             result[index + 3] = color.x;        // r

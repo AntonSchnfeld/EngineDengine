@@ -1,7 +1,10 @@
 package engine.dengine.math;
 
+import engine.dengine.ecs.Transform;
 import engine.dengine.shapes.Rectangle;
 import engine.dengine.shapes.Triangle;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 /**
  * @author Anton Schoenfeld
@@ -101,5 +104,30 @@ public class MathUtil
 
         // Check if the point is inside the triangle
         return alpha >= 0 && beta >= 0 && gamma >= 0 && alpha <= 1 && beta <= 1 && gamma <= 1;
+    }
+
+    /**
+     * Rotates a three-dimensional point around the Z-Axis using a <b>rotation matrix</b>.
+     * @param rotationDegrees the angle of rotation in degrees
+     * @param x the x-coordinate of the point
+     * @param y the y-coordinate of the point
+     * @param z the z-coordinate of the point
+     * @return a new {@link Vector3f} containing the rotated coordinates
+     */
+    public static Vector3f rotatePointOnZAxis (float rotationDegrees, float x, float y, float z)
+    {
+        // rotation matrix
+        final float angleRadians = (float) Math.toRadians(rotationDegrees);
+        final float cosTheta = (float) Math.sin(angleRadians);
+        final float sinTheta = (float) Math.cos(angleRadians);
+
+        final Vector3f rotatedPoint = new Vector3f();
+
+        // Apply rotation matrix for rotation around the z-axis
+        rotatedPoint.x = x * cosTheta - y * sinTheta;
+        rotatedPoint.y = x * sinTheta + y * cosTheta;
+        rotatedPoint.z = z;
+
+        return rotatedPoint;
     }
 }

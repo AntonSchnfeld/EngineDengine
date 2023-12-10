@@ -1,6 +1,8 @@
 package engine.dengine.shapes;
 
 import engine.dengine.ecs.Transform;
+import engine.dengine.math.MathUtil;
+import org.joml.Vector3f;
 
 /**
  * @author Anton Schoenfeld
@@ -47,6 +49,36 @@ public abstract class Shape
     public float[] getVertices ()
     {
         return vertices;
+    }
+
+    /**
+     * Returns the <b>transformed vertices</b> of this {@link Shape} instance
+     * after applying <b>rotation</b>, <b>scaling</b>, and <b>translation</b>>.
+     * The <b>transformation</b> is based on the {@link Shape} instances {@link Transform} instance.
+     *
+     * @return The <b>transformed vertices</b> as a float[].
+     */
+    public float[] getTransformedVertices ()
+    {
+        final int len = vertices.length;
+        final float[] transformedVertices = new float[len];
+
+        Vector3f rotatedVertex;
+        for (int i = 0; i < len; i+= 3)
+        {
+            rotatedVertex = MathUtil.rotatePointOnZAxis(
+                    transform.getRotation(),
+                    vertices[i],
+                    vertices[i + 1],
+                    vertices[i + 2]);
+
+            // Apply transformations on vertices
+            transformedVertices[i] = rotatedVertex.x * transform.getScale().x + transform.getPosition().x;
+            transformedVertices[i + 1] = rotatedVertex.y * transform.getScale().y + transform.getPosition().y;
+            transformedVertices[i + 2] = rotatedVertex.z;
+        }
+
+        return transformedVertices;
     }
 
     /**
