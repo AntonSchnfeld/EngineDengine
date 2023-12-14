@@ -19,21 +19,13 @@ public class Triangle extends Shape
      * Creates a new {@link Triangle} instance with the given <b>vertices</b>.
      *
      * @param vertices the <b>vertices</b> of the new {@link Triangle} instance, must have length of 9
-     * @throws IllegalArgumentException if the z-coordinate of all the <b>vertices</b> are not the same or the array
-     * does not have length 9
+     * @throws IllegalArgumentException if less or more than 9 <b>vertices</b> are provided
      */
     public Triangle (float[] vertices)
     {
         super(vertices);
-        validateVertices(vertices);
-    }
-
-    private void validateVertices (float[] vertices)
-    {
-        if (vertices.length != 9)
-            throw new IllegalArgumentException("Tried to create triangle with insufficient amount of vertices: " + vertices.length + " (9 required");
-        if (vertices[2] != vertices[5] || vertices[5] != vertices[8] || vertices[2] != vertices[8])
-            throw new IllegalArgumentException("Tried to create triangle with vertices on different z-coordinates");
+        if (vertices.length != 9) throw new IllegalArgumentException("Tried to create " + getClass().getName() +
+                " instance with less or more than 9 vertices: " + vertices.length);
     }
 
     /**

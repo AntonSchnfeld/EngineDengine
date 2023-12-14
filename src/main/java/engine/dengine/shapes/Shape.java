@@ -1,5 +1,6 @@
 package engine.dengine.shapes;
 
+import engine.dengine.Constants;
 import engine.dengine.ecs.Transform;
 import engine.dengine.math.MathUtil;
 import org.joml.Vector3f;
@@ -25,6 +26,7 @@ public abstract class Shape
      * Creates a new {@link Shape} instance with the given <b>vertices</b> with a default {@link Transform}
      * created with {@link Transform#Transform()}.
      * @param vertices the <b>vertices</b> of the new {@link Shape} instance
+     * @throws IllegalArgumentException if the z-coordinate of all the <b>vertices</b> is not the same
      */
     public Shape (float[] vertices)
     {
@@ -35,11 +37,26 @@ public abstract class Shape
      * Creates a new {@link Shape} instance.
      * @param vertices the vertices of the new {@link Shape} instance
      * @param transform the {@link Transform} of the new {@link Shape} instance
+     * @throws IllegalArgumentException if the z-coordinate of all the <b>vertices</b> is not the same
      */
     public Shape (float[] vertices, Transform transform)
     {
+        validateVertices(vertices);
+
         this.vertices = vertices;
         this.transform = transform;
+    }
+
+    private void validateVertices (float[] vertices)
+    {
+        final float z = vertices[2];
+        for (int i = 2; i < vertices.length; i += 3)
+            if (vertices[i] != z) throw new IllegalArgumentException("Tried to create " + getClass().getName() +
+                    " with vertices on different z-coordinates");
+
+        if (vertices.length % Constants.POSITION_SIZE != 0)
+            throw new IllegalArgumentException("Tried to create " + getClass().getName() +
+                    " with missing x, y or z coordinates");
     }
 
     /**
@@ -57,6 +74,7 @@ public abstract class Shape
      * The <b>transformation</b> is based on the {@link Shape} instances {@link Transform} instance.
      *
      * @return The <b>transformed vertices</b> as a float[].
+     * @see Transform
      */
     public float[] getTransformedVertices ()
     {

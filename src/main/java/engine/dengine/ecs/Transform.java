@@ -13,6 +13,12 @@ import org.joml.Vector3f;
  * The {@link Transform} class is used to store the <b>transformations</b> which are applied on <b>vertices</b>.
  * A {@link Transform} object stores <b>transformations</b> on <b>position</b>, <b>scale</b> and <b>rotation</b>
  * in degrees.
+ * <br>
+ * A <b>translation</b> in is applied by adding the <b>x </b> and <b>y translation</b> to the <b>x</b> and <b>y
+ * coordinates</b>, respectively. <b>Scaling</b> is applied by multiplying the <b>x</b> and <b>y coordinate</b>
+ * with the <b>x</b> and <b>y scaling factors</b>. <b>Rotation</b> is applied by <b>rotating</b> each point around
+ * the <b>z-axis</b> using a <b>rotation matrix</b>.
+ * @see engine.dengine.math.MathUtil#rotatePointOnZAxis(float, float, float, float)
  */
 public class Transform
 {

@@ -2,11 +2,8 @@ package engine.dengine.window;
 
 import engine.dengine.assets.AssetManager;
 import engine.dengine.assets.Shader;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL33C;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -192,11 +189,12 @@ public class Window
     }
 
     /**
-     * Disposes of this {@link Window} instance. The instances methods and any <b>OpenGL rendering</b> will not
-     * work when called after calling this method.
+     * Disposes of this {@link Window} instance and all <b>assets</b> stored in {@link AssetManager}.
+     * The instances methods and any <b>OpenGL rendering</b> will not work when called after calling this method.
      */
     public void dispose ()
     {
+        // Free all assets
         AssetManager.disposeAll();
         // Free the memory
         glfwFreeCallbacks(window);
@@ -204,7 +202,7 @@ public class Window
 
         // Terminate GLFW and the free the error callback
         glfwTerminate();
-        var c = glfwSetErrorCallback(null);
+        GLFWErrorCallback c = glfwSetErrorCallback(null);
         if (c != null) c.free();
     }
 
